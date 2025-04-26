@@ -1,0 +1,62 @@
+*/target/
+!.mvn/wrapper/maven-wrapper.jar
+/logs
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+*.log
+
+### IntelliJ IDEA ###
+/.idea
+.idea
+*.iws
+*.iml
+*.ipr
+workspace.xml
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+
+### Eclipse ###
+.checkstyle
+.checkstyle-cachefile
+.checkstyle_properties
+.cpd-exclusions
+.cpd-filter
+.cpd-properties
+.pmd-cpd-exclusions
+.pmd-cpd-filter
+.pmd-cpd-properties
+.pmd-exclusions
+.pmd-filter
+.pmd-properties
+
+### Maven ###
+/target/
+/cobertura.ser
+/cobertura.ser.gz
+/cobertura.ser.gz.html
+/cobertura.xml
+/cobertura.xml.html
+/coverage-reports/
+/surefire-reports/
+/test-results/
+/jacoco.exec
+/jacoco-ut.exec
+/jacoco-it.exec
+/jacoco-report.xml
+/jacoco-ut-report.xml
+
+### idea ###
+.idea/
