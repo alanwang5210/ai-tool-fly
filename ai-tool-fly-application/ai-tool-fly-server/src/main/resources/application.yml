@@ -40,7 +40,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 #==============================knife4j配置=======================================
@@ -55,4 +55,3 @@ springdoc:
     - group: 'default'
       paths-to-match: '/**'
       packages-to-scan: com.aitool.controller
-

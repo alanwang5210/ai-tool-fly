@@ -19,22 +19,27 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author 10100
+ */
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "认证管理")
 public class AuthController {
 
     private final AuthService authService;
+    private HttpServletResponse response;
 
     @RequestMapping("/api/auth/render/{source}")
     @ApiOperation(value = "获取第三方授权地址")
     public Result<String> renderAuth(HttpServletResponse response, @PathVariable String source) {
+        this.response = response;
         return Result.success(authService.renderAuth(source));
     }
 
     @RequestMapping("/api/auth/callback/{source}")
     public void login(AuthCallback callback, @PathVariable String source, HttpServletResponse httpServletResponse) throws IOException {
-        authService.authLogin(callback,source,httpServletResponse);
+        authService.authLogin(callback, source, httpServletResponse);
     }
 
 
@@ -66,31 +71,31 @@ public class AuthController {
 
     @ApiOperation(value = "邮箱账号注册")
     @PostMapping("/api/email/register")
-    public Result<Boolean> register(@RequestBody EmailRegisterDto dto){
+    public Result<Boolean> register(@RequestBody EmailRegisterDto dto) {
         return Result.success(authService.register(dto));
     }
 
     @ApiOperation(value = "根据邮箱修改密码")
     @PostMapping("/api/email/forgot")
-    public Result<Boolean> forgot(@RequestBody EmailRegisterDto dto){
+    public Result<Boolean> forgot(@RequestBody EmailRegisterDto dto) {
         return Result.success(authService.forgot(dto));
     }
 
     @ApiOperation(value = "获取微信扫码登录验证码")
     @GetMapping("/api/wechat/getCode")
-    public Result<String> getWechatLoginCode(){
+    public Result<String> getWechatLoginCode() {
         return Result.success(authService.getWechatLoginCode());
     }
 
     @ApiOperation(value = "获取微信扫码登录验证码")
     @GetMapping("/api/wechat/isLogin/{loginCode}")
-    public Result<LoginUserInfo> getWechatIsLogin(@PathVariable String loginCode){
+    public Result<LoginUserInfo> getWechatIsLogin(@PathVariable String loginCode) {
         return Result.success(authService.getWechatIsLogin(loginCode));
     }
 
     @ApiOperation(value = "微信小程序登录")
     @GetMapping("/api/wechat/appletLogin/{code}")
-    public Result<LoginUserInfo> appletLogin(@PathVariable String code){
+    public Result<LoginUserInfo> appletLogin(@PathVariable String code) {
         return Result.success(authService.appletLogin(code));
     }
 

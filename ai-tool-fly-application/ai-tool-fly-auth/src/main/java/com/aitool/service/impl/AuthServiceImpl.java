@@ -1,6 +1,7 @@
 package com.aitool.service.impl;
 
 import cn.dev33.satoken.secure.BCrypt;
+import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
@@ -84,6 +85,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final WechatProperties wechatProperties;
 
+    private final GoogleConfigProperties googleConfigProperties;
+
     private final SysConfigMapper sysConfigMapper;
 
 
@@ -91,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
     public LoginUserInfo login(LoginDTO loginDTO) {
 
         SysConfig verifySwitch = sysConfigMapper.selectOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getConfigKey, "slider_verify_switch"));
-        if (verifySwitch != null && verifySwitch.getConfigValue().equals("Y")) {
+        if (verifySwitch != null && "Y".equals(verifySwitch.getConfigValue())) {
             //校验验证码
             CaptchaUtil.checkImageCode(loginDTO.getNonceStr(), loginDTO.getValue());
         }
@@ -130,7 +133,7 @@ public class AuthServiceImpl implements AuthService {
             throw new ServiceException("账号已被禁用");
         }
 
-        if (user.getUsername().equals(Constants.TEST) && loginDTO.getSource().equalsIgnoreCase("PC")) {
+        if (user.getUsername().equals(Constants.TEST) && "PC".equalsIgnoreCase(loginDTO.getSource())) {
             throw new ServiceException("演示用户不允许门户登录！");
         }
     }
@@ -258,12 +261,12 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public void authLogin(AuthCallback callback,String source, HttpServletResponse httpServletResponse) throws IOException {
+    public void authLogin(AuthCallback callback, String source, HttpServletResponse httpServletResponse) throws IOException {
         AuthRequest authRequest = getAuthRequest(source);
         AuthResponse<AuthUser> response = authRequest.login(callback);
 
         if (response.getData() == null) {
-            log.info("用户取消了 {} 第三方登录",source);
+            log.info("用户取消了 {} 第三方登录", source);
             httpServletResponse.sendRedirect("https://www.shiyit.com");
             return;
         }
@@ -287,7 +290,7 @@ public class AuthServiceImpl implements AuthService {
                     .ipLocation(ipAddress)
                     .ip(ipSource)
                     .status(Constants.YES)
-                    .nickname(source + "-" +getRandomString(6))
+                    .nickname(source + "-" + getRandomString(6))
                     .avatar(jsonObject.get("avatar").toString())
                     .build();
             userMapper.insert(user);
@@ -330,7 +333,7 @@ public class AuthServiceImpl implements AuthService {
             userMapper.insert(user);
             //添加用户角色信息
             this.insertRole(user);
-        }else {
+        } else {
             if (user.getStatus() == Constants.NO) {
                 throw new ServiceException("账号已被禁用，请联系管理员");
             }
@@ -388,7 +391,8 @@ public class AuthServiceImpl implements AuthService {
 
     /**
      * 添加用户角色信息
-     * @param user
+     *
+     * @param user user
      */
     private void insertRole(SysUser user) {
         SysRole sysRole = sysRoleMapper.selectOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getCode, Constants.USER));
@@ -439,6 +443,13 @@ public class AuthServiceImpl implements AuthService {
                         .clientId(githubConfigProperties.getAppId())
                         .clientSecret(githubConfigProperties.getAppSecret())
                         .redirectUri(githubConfigProperties.getRedirectUrl())
+                        .build());
+                break;
+            case "google":
+                authRequest = new AuthGoogleRequest(AuthConfig.builder()
+                        .clientId(googleConfigProperties.getAppId())
+                        .clientSecret(googleConfigProperties.getAppSecret())
+                        .redirectUri(googleConfigProperties.getRedirectUrl())
                         .build());
                 break;
             default:

@@ -133,6 +133,9 @@
             <div class="social-icon" @click="handleSocialLogin('gitee')">
               <svg-icon name="gitee" />
             </div>
+            <div class="social-icon" @click="handleSocialLogin('google')">
+              <svg-icon name="google" />
+            </div>
           </div>
         </div>
       </div>
@@ -285,7 +288,11 @@ const handleLogin = async () => {
 };
 
 const handleSocialLogin = (type: string) => {
-  ElMessage.success(type + "登录测试");
+  if (['gitee', 'github', 'qq', 'weibo', 'google'].includes(type)) {
+    window.location.href = `/api/auth/render/${type}`;
+  } else {
+    ElMessage.success(type + "登录测试");
+  }
 };
 
 const refreshQrCode = async () => {

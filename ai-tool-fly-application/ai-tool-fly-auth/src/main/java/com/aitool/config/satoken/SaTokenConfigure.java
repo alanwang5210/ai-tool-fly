@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author 10100
+ */
 @Configuration
 public class SaTokenConfigure implements WebMvcConfigurer {
     // 注册拦截器
@@ -18,11 +21,15 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                         "/auth/login",
                         "/auth/logout",
                         "/auth/verify",
-                        "/swagger-ui/**",          // knife4j接口文档
-                        "/webjars/**",        // knife4j相关资源
-                        "/v3/api-docs/**",     // openapi接口文档
-                        "/doc.html",     // openapi接口文档
-                        "/favicon.ico",     // openapi接口文档
+                        // knife4j接口文档
+                        "/swagger-ui/**",
+                        // knife4j相关资源
+                        "/webjars/**",
+                        // openapi接口文档
+                        "/v3/api-docs/**",
+                        // openapi接口文档
+                        "/doc.html",
+                        "/favicon.ico",
                         "/swagger-resources",
                         "/api/**",
                         "/wechat/**",

@@ -87,3 +87,8 @@ github:
   app-id:
   app-secret:
   redirect-url: https://www.shiyit.com/shiyi/mojian/api/auth/callback/github
+
+google:
+  app-id:
+  app-secret:
+  redirect-url: https://www.shiyit.com/mojian/api/auth/callback/google

@@ -60,3 +60,4 @@ workspace.xml
 
 ### idea ###
 .idea/
+.vscode/
