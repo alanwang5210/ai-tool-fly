@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author 10100
+ */
 @RestController
 @RequestMapping("/monitor/server")
 @Api(tags = "服务器监控")

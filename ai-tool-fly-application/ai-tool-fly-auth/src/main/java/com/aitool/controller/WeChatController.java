@@ -2,7 +2,7 @@ package com.aitool.controller;
 
 import cn.hutool.core.util.RandomUtil;
 import com.aitool.common.RedisConstants;
-import com.aitool.service.AuthService;
+import com.aitool.service.AppUserAuthService;
 import com.aitool.utils.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +35,7 @@ public class WeChatController {
 
     private final WxMpService wxMpService;
 
-    private final AuthService authService;
+    private final AppUserAuthService appUserAuthService;
 
     private final RedisUtil redisUtil;
 
@@ -56,16 +56,15 @@ public class WeChatController {
 
     @PostMapping(produces = "application/xml; charset=UTF-8")
     public String handleMsg(HttpServletRequest request) {
-
         try {
             WxMpXmlMessage message = WxMpXmlMessage.fromXml(request.getInputStream());
             String content = message.getContent();
             log.info("公众号请求类型:{};内容为:{}", message.getMsgType(), content);
-            if (WxConsts.XmlMsgType.TEXT.equals(message.getMsgType())){
+            if (WxConsts.XmlMsgType.TEXT.equals(message.getMsgType())) {
                 if ("验证码".equals(content)) {
                     String code = RandomUtil.randomNumbers(4);
                     String msg = MessageFormat.format("您的本次验证码:{0},该验证码3分钟内有效。", code);
-                    redisUtil.set(RedisConstants.CAPTCHA_CODE_KEY + code,code,3, TimeUnit.MINUTES);
+                    redisUtil.set(RedisConstants.CAPTCHA_CODE_KEY + code, code, 3, TimeUnit.MINUTES);
                     return returnMsg(msg, message);
                 }
                 //登录逻辑
@@ -73,8 +72,8 @@ public class WeChatController {
                     Matcher matcher = pattern.matcher(content);
                     if (!matcher.matches()) {
                         return returnMsg("验证不正确或已过期", message);
-                    }else {
-                        String msg = authService.wechatLogin(message);
+                    } else {
+                        String msg = appUserAuthService.wechatLogin(message);
                         return returnMsg(msg, message);
                     }
                 }
@@ -90,13 +89,13 @@ public class WeChatController {
 
     /**
      * 返回消息
-     * @param msg 消息内容
-     * @param message
-     * @return
+     *
+     * @param msg     消息内容
+     * @param message 消息对象
+     * @return java.lang.String
      */
     private static String returnMsg(String msg, WxMpXmlMessage message) {
         WxMpXmlOutTextMessage outMessage = WxMpXmlOutTextMessage.TEXT().content(msg).fromUser(message.getToUser()).toUser(message.getFromUser()).build();
         return outMessage.toXml();
     }
 }
-

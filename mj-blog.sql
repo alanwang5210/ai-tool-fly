@@ -1611,12 +1611,6 @@ CREATE TABLE `app_user`
     `sex`             int NULL DEFAULT NULL COMMENT '性别',
     `signature`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '个性签名',
     `status`          int NULL DEFAULT 1 COMMENT '状态 0:禁用 1:正常',
-    `oauth_type`      varchar(20) NOT NULL COMMENT '第三方平台类型(google,wechat,github)',
-    `oauth_id`        varchar(100) NOT NULL COMMENT '第三方平台用户ID',
-    `access_token`    varchar(255) NULL DEFAULT NULL COMMENT '访问令牌',
-    `refresh_token`   varchar(255) NULL DEFAULT NULL COMMENT '刷新令牌',
-    `token_expires_in` bigint NULL DEFAULT NULL COMMENT '令牌过期时间',
-    `scope`           varchar(255) NULL DEFAULT NULL COMMENT '授权范围',
     `ip`              varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'ip地址',
     `ip_location`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'ip来源',
     `os`              varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录系统',
@@ -1625,8 +1619,26 @@ CREATE TABLE `app_user`
     `create_time`     datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`     datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `oauth_type_id`(`oauth_type`, `oauth_id`) USING BTREE COMMENT '确保同一平台同一用户只有一条记录'
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '应用用户表' ROW_FORMAT = DYNAMIC;
+
+-- 创建第三方认证表
+CREATE TABLE IF NOT EXISTS `app_user_third_auth` (
+                                                     `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                                     `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+                                                     `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
+                                                     `name` varchar(100) DEFAULT NULL COMMENT '名称',
+                                                     `oauth_type` varchar(20) NOT NULL COMMENT '第三方平台类型(google,wechat,github)',
+                                                     `oauth_id` varchar(100) NOT NULL COMMENT '第三方平台用户ID',
+                                                     `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+                                                     `access_token` text DEFAULT NULL COMMENT '访问令牌',
+                                                     `refresh_token` text DEFAULT NULL COMMENT '刷新令牌',
+                                                     `expires_in` datetime DEFAULT NULL COMMENT '令牌过期时间',
+                                                     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                                     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                                     PRIMARY KEY (`id`),
+                                                     UNIQUE KEY `uk_oauth_type_oauth_id` (`oauth_type`, `oauth_id`),
+                                                     KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='第三方认证信息表';
 
 SET
 FOREIGN_KEY_CHECKS = 1;

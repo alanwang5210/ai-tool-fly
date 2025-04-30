@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 友情链接 控制器
+ * @author 10100
  */
 @RestController
 @Api(tags = "友情链接管理")

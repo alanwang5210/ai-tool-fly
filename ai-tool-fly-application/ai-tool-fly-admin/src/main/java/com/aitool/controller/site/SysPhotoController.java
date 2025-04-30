@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 照片 控制器
+ *
+ * @author 10100
  */
 @RestController
 @RequestMapping("/sys/photo")
@@ -60,6 +62,6 @@ public class SysPhotoController {
     @SaCheckPermission("sys:photo:move")
     @ApiOperation(value = "移动照片")
     public Result<Object> move(@PathVariable List<Long> ids, @RequestParam Long albumId) {
-        return Result.success(sysPhotoService.move(ids,albumId));
+        return Result.success(sysPhotoService.move(ids, albumId));
     }
 }

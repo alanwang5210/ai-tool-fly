@@ -10,6 +10,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author 10100
+ */
 @RestController
 @Api(tags = "网站配置管理")
 @RequestMapping("/sys/web")

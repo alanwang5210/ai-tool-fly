@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 相册 控制器
+ * @author 10100
  */
 @RestController
 @RequestMapping("/sys/album")

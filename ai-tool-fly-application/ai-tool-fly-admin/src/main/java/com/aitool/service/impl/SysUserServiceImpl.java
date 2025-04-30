@@ -31,32 +31,34 @@ import java.util.List;
 
 import com.aitool.dto.user.UpdatePwdDTO;
 
+/**
+ * @author 10100
+ */
 @Service
 @RequiredArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysRoleMapper roleMapper;
     private final RedisUtil redisUtil;
-    private final SysUserMapper sysUserMapper;
 
     @Override
     public IPage<SysUserVo> listUsers(SysUser sysUser) {
-        return baseMapper.selectUserPage(PageUtil.getPage(),sysUser);
+        return baseMapper.selectUserPage(PageUtil.getPage(), sysUser);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void add(SysUserAddAndUpdateDto SysUserAddAndUpdateDto) {
+    public void add(SysUserAddAndUpdateDto sysUserAddAndUpdateDto) {
         // 检查用户名是否已存在
-        SysUser user = SysUserAddAndUpdateDto.getUser();
+        SysUser user = sysUserAddAndUpdateDto.getUser();
         if (baseMapper.selectByUsername(user.getUsername()) != null) {
             throw new RuntimeException("用户名已存在");
         }
-        user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         save(user);
 
         //保存角色信息
-        roleMapper.addRoleUser(user.getId(), SysUserAddAndUpdateDto.getRoleIds());
+        roleMapper.addRoleUser(user.getId(), sysUserAddAndUpdateDto.getRoleIds());
     }
 
     @Override
@@ -89,7 +91,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new ServiceException("用户不存在");
         }
 
-        if(!StpUtil.hasRole(Constants.ADMIN) && user.getId() != StpUtil.getLoginIdAsLong()) {
+        if (!StpUtil.hasRole(Constants.ADMIN) && user.getId() != StpUtil.getLoginIdAsLong()) {
             throw new ServiceException("只能修改自己的密码！");
         }
 
@@ -97,7 +99,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new ServiceException("旧密码错误");
         }
 
-        user.setPassword(BCrypt.hashpw(updatePwdDTO.getNewPassword(),BCrypt.gensalt()));
+        user.setPassword(BCrypt.hashpw(updatePwdDTO.getNewPassword(), BCrypt.gensalt()));
         this.updateById(user);
     }
 
@@ -125,7 +127,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Boolean resetPassword(SysUser user) {
-        user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         baseMapper.updateById(user);
         return true;
     }
@@ -136,7 +138,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Integer pageSize = PageUtil.getPageQuery().getPageSize();
 
         // 返回数据对象
-        Collection<String> keys = redisUtil.keys(RedisConstants.LOGIN_TOKEN.concat( "*"));
+        Collection<String> keys = redisUtil.keys(RedisConstants.LOGIN_TOKEN.concat("*"));
 
         List<OnlineUserVo> totalList = new ArrayList<>();
         for (String key : keys) {

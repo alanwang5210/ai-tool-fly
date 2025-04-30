@@ -6,7 +6,9 @@ public class UserAgentUtil {
      * 获取操作系统信息
      */
     public static String getOs(String userAgent) {
-        if (userAgent == null) return "未知";
+        if (userAgent == null) {
+            return "未知";
+        }
 
         userAgent = userAgent.toLowerCase();
         if (userAgent.contains("windows")) {
@@ -27,7 +29,9 @@ public class UserAgentUtil {
      * 获取浏览器信息
      */
     public static String getBrowser(String userAgent) {
-        if (userAgent == null) return "未知";
+        if (userAgent == null) {
+            return "未知";
+        }
 
         userAgent = userAgent.toLowerCase();
         if (userAgent.contains("edge")) {

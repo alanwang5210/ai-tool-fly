@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * @author 10100
+ */
 @RestController
 @RequestMapping("/sys/dashboard")
 @RequiredArgsConstructor

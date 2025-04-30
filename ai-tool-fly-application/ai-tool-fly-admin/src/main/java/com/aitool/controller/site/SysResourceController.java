@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 资源表 控制器
+ * @author 10100
  */
 @RestController
 @RequestMapping("/sys/resource")

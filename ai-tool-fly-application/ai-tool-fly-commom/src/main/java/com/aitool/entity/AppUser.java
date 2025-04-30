@@ -27,6 +27,9 @@ public class AppUser implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
 
+    @ApiModelProperty(value = "用户名")
+    private String username;
+    
     @ApiModelProperty(value = "昵称")
     private String nickname;
 
@@ -39,6 +42,9 @@ public class AppUser implements Serializable {
     @ApiModelProperty(value = "手机号")
     private String mobile;
 
+    @ApiModelProperty(value = "密码")
+    private String password;
+
     @ApiModelProperty(value = "性别")
     private Integer sex;
 
@@ -48,23 +54,7 @@ public class AppUser implements Serializable {
     @ApiModelProperty(value = "状态 0:禁用 1:正常")
     private Integer status;
 
-    @ApiModelProperty(value = "第三方平台类型(google,wechat,github)")
-    private String oauthType;
-
-    @ApiModelProperty(value = "第三方平台用户ID")
-    private String oauthId;
-
-    @ApiModelProperty(value = "访问令牌")
-    private String accessToken;
-
-    @ApiModelProperty(value = "刷新令牌")
-    private String refreshToken;
-
-    @ApiModelProperty(value = "令牌过期时间")
-    private Long tokenExpiresIn;
-
-    @ApiModelProperty(value = "授权范围")
-    private String scope;
+    // 第三方认证信息已移至AppUserThirdAuth表
 
     @ApiModelProperty(value = "ip地址")
     private String ip;

@@ -42,8 +42,7 @@ public class EmailUtil {
     private final JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
 
-
-    public void getJavaMailSenderImpl(){
+    public void getJavaMailSenderImpl() {
         javaMailSender.setHost(host);
         javaMailSender.setUsername(fromEmail);
         javaMailSender.setPassword(password);
@@ -57,8 +56,8 @@ public class EmailUtil {
 
     /**
      * 发送验证码
-     * @param email
-     * @throws MessagingException
+     *
+     * @param email email
      */
     public void sendCode(String email) throws MessagingException {
 
@@ -90,7 +89,7 @@ public class EmailUtil {
                 "            </tr>\n" +
                 "            <tr>\n" +
                 "              <td class=\"p-code\">\n" +
-                "                <p style=\"color: #253858;text-align:center;line-height:1.75em;background-color: #f2f2f2;min-width: 200px;margin: 0 auto;font-size: 28px;border-radius: 5px;border: 1px solid #d9d9d9;font-weight: bold;\">"+code+"</p>\n" +
+                "                <p style=\"color: #253858;text-align:center;line-height:1.75em;background-color: #f2f2f2;min-width: 200px;margin: 0 auto;font-size: 28px;border-radius: 5px;border: 1px solid #d9d9d9;font-weight: bold;\">" + code + "</p>\n" +
                 "              </td>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
@@ -120,9 +119,9 @@ public class EmailUtil {
 
         // 创建邮件消息
         this.send(email, content);
-        log.info("邮箱验证码发送成功,邮箱:{},验证码:{}",email,code);
+        log.info("邮箱验证码发送成功,邮箱:{},验证码:{}", email, code);
 
-        redisUtil.set(RedisConstants.CAPTCHA_CODE_KEY + email, code +"");
+        redisUtil.set(RedisConstants.CAPTCHA_CODE_KEY + email, code + "");
         redisUtil.expire(RedisConstants.CAPTCHA_CODE_KEY + email, RedisConstants.MINUTE_EXPIRE, TimeUnit.SECONDS);
     }
 
@@ -140,10 +139,8 @@ public class EmailUtil {
         // 设置邮件发送日期
         mineHelper.setSentDate(DateUtil.getNowDate());
         // 设置邮件的正文
-        mineHelper.setText(template,true);
+        mineHelper.setText(template, true);
         // 发送邮件
         javaMailSender.send(mimeMessage);
     }
-
-
 }

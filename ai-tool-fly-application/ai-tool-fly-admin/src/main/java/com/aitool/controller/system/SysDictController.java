@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author 10100
+ */
 @Api(tags = "字典管理")
 @RestController
 @RequestMapping("/sys/dict")

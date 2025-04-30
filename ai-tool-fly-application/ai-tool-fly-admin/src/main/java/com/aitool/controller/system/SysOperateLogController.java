@@ -13,6 +13,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 
 
+/**
+ * @author 10100
+ */
 @RestController
 @RequestMapping("/sys/operateLog")
 @RequiredArgsConstructor

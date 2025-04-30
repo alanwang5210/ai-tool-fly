@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * @author 10100
+ */
 @RestController
 @RequestMapping("/tool/gen")
 @RequiredArgsConstructor

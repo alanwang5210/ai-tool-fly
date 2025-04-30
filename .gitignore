@@ -61,3 +61,5 @@ workspace.xml
 ### idea ###
 .idea/
 .vscode/
+
+ip2region.xdb
